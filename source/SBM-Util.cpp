@@ -79,10 +79,12 @@ int SBM_Image::Load(char* filename)
   // Get file size
   In.seekg(0,ios_base::end);
   FileSize=In.tellg();
+  if (FileSize < 0)
+      return -1;
   In.seekg(0,ios_base::beg);
 
   // Allocate some space
-  FileData=new unsigned char[FileSize];
+  FileData=new unsigned char[static_cast<unsigned char>(FileSize)];
 
    if(FileData==NULL)
     {
@@ -364,7 +366,7 @@ int SBM_Image::LoadBMPPalette()
   return SBM_OK;
  }
 
-int SBM_Image::SaveBMP(char* fname)
+int SBM_Image::SaveBMP(wchar_t* fname)
  {
   ofstream out;
   int Res=SBM_ERR_UNSUPPORTED;
@@ -626,7 +628,7 @@ int SBM_Image::LoadPCXPalette()
  }
 
 
-int SBM_Image::SavePCX(char* fname)
+int SBM_Image::SavePCX(wchar_t* fname)
  {
   return SBM_ERR_UNSUPPORTED;
  }
@@ -899,7 +901,7 @@ int SBM_Image::LoadTGAPalette()
  }
 
 
-int SBM_Image::SaveTGA(char *filename)
+int SBM_Image::SaveTGA(wchar_t*filename)
  {
   ofstream out;
 
@@ -960,7 +962,7 @@ int SBM_Image::SaveTGA(char *filename)
  }
 
 
-int SBM_Image::SaveRaw(char *filename)
+int SBM_Image::SaveRaw(wchar_t*filename)
  {
   ofstream out;
 

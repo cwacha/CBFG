@@ -54,6 +54,7 @@ void CreateFontMap()
   HRGN ClipRgn;
   int Opt=0,Selection;
 
+  Fnt->CalculateAutoSize();
   const int MapWidth=Fnt->GetSize(MAPWIDTH);
   const int MapHeight=Fnt->GetSize(MAPHEIGHT);
 
@@ -222,7 +223,7 @@ void CalcScroll()
  }
 
 
-BOOL CheckOverwrite(char *fname)
+BOOL CheckOverwrite(wchar_t*fname)
  {
   ifstream testfile;
 
@@ -232,7 +233,7 @@ BOOL CheckOverwrite(char *fname)
    if(!testfile.fail())
     {
      testfile.close();
-      if(MessageBox(hMain,"Overwrite existing file?","Filename already exists",MB_YESNO | MB_ICONQUESTION)==IDNO)
+      if(MessageBox(hMain,L"Overwrite existing file?",L"Filename already exists",MB_YESNO | MB_ICONQUESTION)==IDNO)
        return FALSE;
     }
 

@@ -1,4 +1,5 @@
 #include "stdafx.h"
+#include <wchar.h>
 #include "CBFGDefs.h"
 #include "Procs.h"
 #include "FontMapClass.h"
@@ -26,7 +27,7 @@ BOOL CALLBACK MainProc(HWND hDlg, UINT msg, WPARAM wParam, LPARAM lParam)
  {
   HDC dc;
   LOGFONT fDef;
-  char Text[256];
+  wchar_t Text[512];
   int RowDex,Index;
   int tVal,BPPVal,Flags,RetVal;
   SCROLLINFO scrInf;
@@ -40,30 +41,35 @@ BOOL CALLBACK MainProc(HWND hDlg, UINT msg, WPARAM wParam, LPARAM lParam)
    switch(msg)
   	 {
 	    case WM_INITDIALOG:
-      SendMessage(hDlg,WM_SETICON,ICON_BIG,(LPARAM)LoadIcon(G_Inst,MAKEINTRESOURCE(MAKEINTRESOURCE(APP_ICON))));
+      SendMessage(hDlg,WM_SETICON,ICON_BIG,(LPARAM)LoadIcon(G_Inst,MAKEINTRESOURCE(APP_ICON)));
       SendDlgItemMessage(hDlg,CMD_UP,BM_SETIMAGE,IMAGE_ICON,(LPARAM)LoadIcon(G_Inst,MAKEINTRESOURCE(ICO_UP)));
       SendDlgItemMessage(hDlg,CMD_DOWN,BM_SETIMAGE,IMAGE_ICON,(LPARAM)LoadIcon(G_Inst,MAKEINTRESOURCE(ICO_DOWN)));
       SendDlgItemMessage(hDlg,CMD_RIGHT,BM_SETIMAGE,IMAGE_ICON,(LPARAM)LoadIcon(G_Inst,MAKEINTRESOURCE(ICO_RIGHT)));
       SendDlgItemMessage(hDlg,CMD_LEFT,BM_SETIMAGE,IMAGE_ICON,(LPARAM)LoadIcon(G_Inst,MAKEINTRESOURCE(ICO_LEFT)));
-      SendDlgItemMessage(hDlg,CBO_IMGXRES,CB_ADDSTRING,0,(LPARAM)"16");
-      SendDlgItemMessage(hDlg,CBO_IMGXRES,CB_ADDSTRING,0,(LPARAM)"32");
-      SendDlgItemMessage(hDlg,CBO_IMGXRES,CB_ADDSTRING,0,(LPARAM)"64");
-      SendDlgItemMessage(hDlg,CBO_IMGXRES,CB_ADDSTRING,0,(LPARAM)"128");
-      SendDlgItemMessage(hDlg,CBO_IMGXRES,CB_ADDSTRING,0,(LPARAM)"256");
-      SendDlgItemMessage(hDlg,CBO_IMGXRES,CB_ADDSTRING,0,(LPARAM)"512");
-      SendDlgItemMessage(hDlg,CBO_IMGXRES,CB_ADDSTRING,0,(LPARAM)"1024");
-      SendDlgItemMessage(hDlg,CBO_IMGXRES,CB_ADDSTRING,0,(LPARAM)"2048");
-      SendDlgItemMessage(hDlg,CBO_IMGXRES,CB_ADDSTRING,0,(LPARAM)"4096");
+      
+      SendDlgItemMessage(hDlg, RAD_SIZE_MANUAL, BM_SETCHECK, BST_CHECKED, 0);
+      SendDlgItemMessage(hDlg, TXT_TEXTURECOLS, EM_SETREADONLY, TRUE, 0);
+      SendDlgItemMessage(hDlg, TXT_TEXTUREROWS, EM_SETREADONLY, TRUE, 0);
 
-      SendDlgItemMessage(hDlg,CBO_IMGYRES,CB_ADDSTRING,0,(LPARAM)"16");
-      SendDlgItemMessage(hDlg,CBO_IMGYRES,CB_ADDSTRING,0,(LPARAM)"32");
-      SendDlgItemMessage(hDlg,CBO_IMGYRES,CB_ADDSTRING,0,(LPARAM)"64");
-      SendDlgItemMessage(hDlg,CBO_IMGYRES,CB_ADDSTRING,0,(LPARAM)"128");
-      SendDlgItemMessage(hDlg,CBO_IMGYRES,CB_ADDSTRING,0,(LPARAM)"256");
-      SendDlgItemMessage(hDlg,CBO_IMGYRES,CB_ADDSTRING,0,(LPARAM)"512");
-      SendDlgItemMessage(hDlg,CBO_IMGYRES,CB_ADDSTRING,0,(LPARAM)"1024");
-      SendDlgItemMessage(hDlg,CBO_IMGYRES,CB_ADDSTRING,0,(LPARAM)"2048");
-      SendDlgItemMessage(hDlg,CBO_IMGYRES,CB_ADDSTRING,0,(LPARAM)"4096");
+      SendDlgItemMessage(hDlg,CBO_IMGXRES,CB_ADDSTRING,0,(LPARAM)L"16");
+      SendDlgItemMessage(hDlg,CBO_IMGXRES,CB_ADDSTRING,0,(LPARAM)L"32");
+      SendDlgItemMessage(hDlg,CBO_IMGXRES,CB_ADDSTRING,0,(LPARAM)L"64");
+      SendDlgItemMessage(hDlg,CBO_IMGXRES,CB_ADDSTRING,0,(LPARAM)L"128");
+      SendDlgItemMessage(hDlg,CBO_IMGXRES,CB_ADDSTRING,0,(LPARAM)L"256");
+      SendDlgItemMessage(hDlg,CBO_IMGXRES,CB_ADDSTRING,0,(LPARAM)L"512");
+      SendDlgItemMessage(hDlg,CBO_IMGXRES,CB_ADDSTRING,0,(LPARAM)L"1024");
+      SendDlgItemMessage(hDlg,CBO_IMGXRES,CB_ADDSTRING,0,(LPARAM)L"2048");
+      SendDlgItemMessage(hDlg,CBO_IMGXRES,CB_ADDSTRING,0,(LPARAM)L"4096");
+
+      SendDlgItemMessage(hDlg,CBO_IMGYRES,CB_ADDSTRING,0,(LPARAM)L"16");
+      SendDlgItemMessage(hDlg,CBO_IMGYRES,CB_ADDSTRING,0,(LPARAM)L"32");
+      SendDlgItemMessage(hDlg,CBO_IMGYRES,CB_ADDSTRING,0,(LPARAM)L"64");
+      SendDlgItemMessage(hDlg,CBO_IMGYRES,CB_ADDSTRING,0,(LPARAM)L"128");
+      SendDlgItemMessage(hDlg,CBO_IMGYRES,CB_ADDSTRING,0,(LPARAM)L"256");
+      SendDlgItemMessage(hDlg,CBO_IMGYRES,CB_ADDSTRING,0,(LPARAM)L"512");
+      SendDlgItemMessage(hDlg,CBO_IMGYRES,CB_ADDSTRING,0,(LPARAM)L"1024");
+      SendDlgItemMessage(hDlg,CBO_IMGYRES,CB_ADDSTRING,0,(LPARAM)L"2048");
+      SendDlgItemMessage(hDlg,CBO_IMGYRES,CB_ADDSTRING,0,(LPARAM)L"4096");
 
       tVal=Fnt->GetSize(MAPWIDTH);
        if(tVal==32)
@@ -105,33 +111,41 @@ BOOL CALLBACK MainProc(HWND hDlg, UINT msg, WPARAM wParam, LPARAM lParam)
        else
         SendDlgItemMessage(hDlg,CBO_IMGYRES,CB_SETCURSEL,0,0);
 
-      SendDlgItemMessage(hDlg,CBO_ALIAS,CB_ADDSTRING,0,(LPARAM)"None");
-      SendDlgItemMessage(hDlg,CBO_ALIAS,CB_ADDSTRING,0,(LPARAM)"Normal Anti-Alias");
-      SendDlgItemMessage(hDlg,CBO_ALIAS,CB_ADDSTRING,0,(LPARAM)"ClearType (WinXP Only)");
+       SendDlgItemMessage(hDlg, TXT_TEXTURECOLS, WM_SETTEXT, 0, (LPARAM)L"16");
+       SendDlgItemMessage(hDlg, TXT_TEXTUREROWS, WM_SETTEXT, 0, (LPARAM)L"16");
+
+      SendDlgItemMessage(hDlg,CBO_ALIAS,CB_ADDSTRING,0,(LPARAM)L"None");
+      SendDlgItemMessage(hDlg,CBO_ALIAS,CB_ADDSTRING,0,(LPARAM)L"Normal Anti-Alias");
+      SendDlgItemMessage(hDlg,CBO_ALIAS,CB_ADDSTRING,0,(LPARAM)L"ClearType (WinXP Only)");
       SendDlgItemMessage(hDlg,CBO_ALIAS,CB_SETCURSEL,0,0);
 
-      SendDlgItemMessage(hDlg,CBO_ZOOM,CB_ADDSTRING,0,(LPARAM)"25%");
-      SendDlgItemMessage(hDlg,CBO_ZOOM,CB_ADDSTRING,0,(LPARAM)"50%");
-      SendDlgItemMessage(hDlg,CBO_ZOOM,CB_ADDSTRING,0,(LPARAM)"100%");
-      SendDlgItemMessage(hDlg,CBO_ZOOM,CB_ADDSTRING,0,(LPARAM)"200%");
-      SendDlgItemMessage(hDlg,CBO_ZOOM,CB_ADDSTRING,0,(LPARAM)"400%");
+      SendDlgItemMessage(hDlg,CBO_ZOOM,CB_ADDSTRING,0,(LPARAM)L"25%");
+      SendDlgItemMessage(hDlg,CBO_ZOOM,CB_ADDSTRING,0,(LPARAM)L"50%");
+      SendDlgItemMessage(hDlg,CBO_ZOOM,CB_ADDSTRING,0,(LPARAM)L"100%");
+      SendDlgItemMessage(hDlg,CBO_ZOOM,CB_ADDSTRING,0,(LPARAM)L"200%");
+      SendDlgItemMessage(hDlg,CBO_ZOOM,CB_ADDSTRING,0,(LPARAM)L"400%");
       SendDlgItemMessage(hDlg,CBO_ZOOM,CB_SETCURSEL,2,0);
 
-      wsprintf(Text,"%d",Fnt->GetSize(CELLWIDTH));
+      wsprintf(Text,L"%d",Fnt->GetSize(CELLWIDTH));
       SendDlgItemMessage(hDlg,TXT_CELLWIDTH,WM_SETTEXT,0,(LPARAM)Text);
-      wsprintf(Text,"%d",Fnt->GetSize(CELLHEIGHT));
+      wsprintf(Text,L"%d",Fnt->GetSize(CELLHEIGHT));
       SendDlgItemMessage(hDlg,TXT_CELLHEIGHT,WM_SETTEXT,0,(LPARAM)Text);
-      wsprintf(Text,"%d",Fnt->GetFontWidth());
+      wsprintf(Text,L"%d",Fnt->GetFontWidth());
       SendDlgItemMessage(hDlg,TXT_FONTWIDTH,WM_SETTEXT,0,(LPARAM)Text);
-      wsprintf(Text,"%d",Fnt->GetFontHeight());
+      wsprintf(Text,L"%d",Fnt->GetFontHeight());
       SendDlgItemMessage(hDlg,TXT_FONTHEIGHT,WM_SETTEXT,0,(LPARAM)Text);
 
-      SendDlgItemMessage(hDlg,SPN_CELLWIDTH,UDM_SETRANGE,0,MAKELONG(256,8));
-      SendDlgItemMessage(hDlg,SPN_CELLHEIGHT,UDM_SETRANGE,0,MAKELONG(256,8));
+      SendDlgItemMessage(hDlg, SPN_TEXTURECOLS, UDM_SETRANGE, 0, MAKELONG(256, 1));
+      SendDlgItemMessage(hDlg, SPN_TEXTUREROWS, UDM_SETRANGE, 0, MAKELONG(256, 1));
+      SendDlgItemMessage(hDlg,SPN_CELLWIDTH,UDM_SETRANGE,0,MAKELONG(256,6));
+      SendDlgItemMessage(hDlg,SPN_CELLHEIGHT,UDM_SETRANGE,0,MAKELONG(256,6));
       SendDlgItemMessage(hDlg,SPN_FONTHEIGHT,UDM_SETRANGE,0,MAKELONG(256,1));
       SendDlgItemMessage(hDlg,SPN_FONTWIDTH,UDM_SETRANGE,0,MAKELONG(256,0));
       SendDlgItemMessage(hDlg,SPN_WIDTH,UDM_SETRANGE,0,MAKELONG(100,-100));
       SendDlgItemMessage(hDlg,SPN_START,UDM_SETRANGE,0,MAKELONG(254,0));
+
+      swprintf(Text, _countof(Text), L"%s", Fnt->GetAlphabet());
+      SendDlgItemMessage(hDlg, TXT_ALPHABET, WM_SETTEXT, 0, (LPARAM)Text);
 
       SendDlgItemMessage(hDlg,RAD_ALL,BM_SETCHECK,BST_CHECKED,0);
 
@@ -205,7 +219,7 @@ BOOL CALLBACK MainProc(HWND hDlg, UINT msg, WPARAM wParam, LPARAM lParam)
       EnableWindow(GetDlgItem(hMain,SCR_VERT),FALSE);
 
       Fnt->SetBaseChar(32);
-      wsprintf(Text,"%d",Fnt->GetBaseChar());
+      wsprintf(Text,L"%d",Fnt->GetBaseChar());
       SendDlgItemMessage(hDlg,TXT_START,WM_SETTEXT,0,(LPARAM)Text);
 
       SendMessage(hMain,WM_APP+1,0,0);
@@ -219,25 +233,25 @@ BOOL CALLBACK MainProc(HWND hDlg, UINT msg, WPARAM wParam, LPARAM lParam)
      case WM_APP+1: // Control Update
        if(info->ModAll==TRUE)
         {
-         wsprintf(Text,"%d",Fnt->GetGlobal(HOFFSET));
+         wsprintf(Text,L"%d",Fnt->GetGlobal(HOFFSET));
          SendDlgItemMessage(hMain,TXT_XADJ,WM_SETTEXT,0,(LPARAM)Text);
-         wsprintf(Text,"%d",Fnt->GetGlobal(VOFFSET));
+         wsprintf(Text,L"%d",Fnt->GetGlobal(VOFFSET));
          SendDlgItemMessage(hMain,TXT_YADJ,WM_SETTEXT,0,(LPARAM)Text);
-         wsprintf(Text,"%d",Fnt->GetGlobal(WIDTH));
+         wsprintf(Text,L"%d",Fnt->GetGlobal(WIDTH));
          SendDlgItemMessage(hMain,TXT_WADJ,WM_SETTEXT,0,(LPARAM)Text);
-         SendDlgItemMessage(hMain,TXT_WIDTH,WM_SETTEXT,0,(LPARAM)"");
+         SendDlgItemMessage(hMain,TXT_WIDTH,WM_SETTEXT,0,(LPARAM)L"");
         }
        else
         {
-         wsprintf(Text,"%d",Fnt->GetCharVal(info->Select+Fnt->GetBaseChar(),HOFFSET));
+         wsprintf(Text,L"%d",Fnt->GetCharVal(info->Select+Fnt->GetBaseChar(),HOFFSET));
          SendDlgItemMessage(hMain,TXT_XADJ,WM_SETTEXT,0,(LPARAM)Text);
-         wsprintf(Text,"%d",Fnt->GetCharVal(info->Select+Fnt->GetBaseChar(),VOFFSET));
+         wsprintf(Text,L"%d",Fnt->GetCharVal(info->Select+Fnt->GetBaseChar(),VOFFSET));
          SendDlgItemMessage(hMain,TXT_YADJ,WM_SETTEXT,0,(LPARAM)Text);
-         wsprintf(Text,"%d",Fnt->GetCharVal(info->Select+Fnt->GetBaseChar(),WOFFSET));
+         wsprintf(Text,L"%d",Fnt->GetCharVal(info->Select+Fnt->GetBaseChar(),WOFFSET));
          SendDlgItemMessage(hMain,TXT_WADJ,WM_SETTEXT,0,(LPARAM)Text);
-         wsprintf(Text,"%d",Fnt->GetCharVal(info->Select+Fnt->GetBaseChar(),EWIDTH));
+         wsprintf(Text,L"%d",Fnt->GetCharVal(info->Select+Fnt->GetBaseChar(),EWIDTH));
          SendDlgItemMessage(hMain,TXT_WIDTH,WM_SETTEXT,0,(LPARAM)Text);
-         wsprintf(Text,"Adjust Selection (%d) Only",info->Select+Fnt->GetBaseChar());
+         wsprintf(Text,L"Adjust Selection (%d) Only",info->Select+Fnt->GetBaseChar());
          SendDlgItemMessage(hMain,RAD_SEL,WM_SETTEXT,0,(LPARAM)Text);
         }
       return TRUE;
@@ -355,6 +369,18 @@ BOOL CALLBACK MainProc(HWND hDlg, UINT msg, WPARAM wParam, LPARAM lParam)
          {
           switch(Hdr->hdr.idFrom)
            {
+          case SPN_TEXTURECOLS:
+              if (info->useTextureSizeAuto) {
+                  Fnt->SetSize(TEXTURECOLS, Hdr->iPos + Hdr->iDelta);
+                  CreateFontMap();
+              }
+              return 0;
+          case SPN_TEXTUREROWS:
+              if (info->useTextureSizeAuto) {
+                  Fnt->SetSize(TEXTUREROWS, Hdr->iPos + Hdr->iDelta);
+                  CreateFontMap();
+              }
+              return 0;
             case SPN_CELLHEIGHT:
              Fnt->SetSize(CELLHEIGHT,Hdr->iPos+Hdr->iDelta);
              info->MaxChars=Fnt->GetSize(MAXCHARS);
@@ -388,7 +414,7 @@ BOOL CALLBACK MainProc(HWND hDlg, UINT msg, WPARAM wParam, LPARAM lParam)
               else
                {
                 Fnt->SetCharVal(info->Select+Fnt->GetBaseChar(),WOFFSET,Hdr->iPos+Hdr->iDelta);
-                wsprintf(Text,"%d",Fnt->GetCharVal(info->Select+Fnt->GetBaseChar(),EWIDTH));
+                wsprintf(Text,L"%d",Fnt->GetCharVal(info->Select+Fnt->GetBaseChar(),EWIDTH));
                 SendDlgItemMessage(hMain,TXT_WIDTH,WM_SETTEXT,0,(LPARAM)Text);
                 CreateFontMap();
                }
@@ -491,6 +517,28 @@ BOOL CALLBACK MainProc(HWND hDlg, UINT msg, WPARAM wParam, LPARAM lParam)
            CreateFontMap();
            return TRUE;
 
+          case CHK_ALPHABET:
+              info->useAlphabet ^= 1;
+              if (info->useAlphabet)
+              {
+                  SendDlgItemMessage(hMain, CHK_ALPHABET, BM_SETCHECK, BST_CHECKED, 0);
+                  //CheckMenuItem(GetMenu(hMain), ID_VIEW_WIDTHMARKERS, MF_CHECKED);
+                  Fnt->enableAlphabet(true);
+                  Fnt->SetBaseChar(0);
+              }
+              else
+              {
+                  SendDlgItemMessage(hMain, CHK_ALPHABET, BM_SETCHECK, BST_UNCHECKED, 0);
+                  //CheckMenuItem(GetMenu(hMain), ID_VIEW_WIDTHMARKERS, MF_UNCHECKED);
+                  Fnt->enableAlphabet(false);
+                  Fnt->SetBaseChar(32);
+              }
+              wsprintf(Text, L"%d", Fnt->GetBaseChar());
+              SendDlgItemMessage(hDlg, TXT_START, WM_SETTEXT, 0, (LPARAM)Text);
+
+              CreateFontMap();
+
+              return TRUE;
           case CMD_LEFT:
             if(info->ModAll)
              {
@@ -555,11 +603,36 @@ BOOL CALLBACK MainProc(HWND hDlg, UINT msg, WPARAM wParam, LPARAM lParam)
            CreateFontMap();
            return TRUE;
 
+          case RAD_SIZE_MANUAL:
+              info->useTextureSizeAuto = FALSE;
+              SendDlgItemMessage(hDlg, CBO_IMGXRES, EM_SETREADONLY, FALSE, 0);
+              SendDlgItemMessage(hDlg, CBO_IMGYRES, EM_SETREADONLY, FALSE, 0);
+
+              SendDlgItemMessage(hDlg, TXT_TEXTURECOLS, EM_SETREADONLY, TRUE, 0);
+              SendDlgItemMessage(hDlg, TXT_TEXTUREROWS, EM_SETREADONLY, TRUE, 0);
+              Fnt->SetAutoSize(FALSE);
+
+              SendMessage(hMain, WM_COMMAND, MAKELPARAM(CBO_IMGXRES, CBN_SELCHANGE), 0);
+              SendMessage(hMain, WM_COMMAND, MAKELPARAM(CBO_IMGYRES, CBN_SELCHANGE), 0);
+              return TRUE;
+          case RAD_SIZE_AUTO:
+              info->useTextureSizeAuto = TRUE;
+              SendDlgItemMessage(hDlg, CBO_IMGXRES, EM_SETREADONLY, TRUE, 0);
+              SendDlgItemMessage(hDlg, CBO_IMGYRES, EM_SETREADONLY, TRUE, 0);
+
+              SendDlgItemMessage(hDlg, TXT_TEXTURECOLS, EM_SETREADONLY, FALSE, 0);
+              SendDlgItemMessage(hDlg, TXT_TEXTUREROWS, EM_SETREADONLY, FALSE, 0);
+              Fnt->SetAutoSize(TRUE);
+
+              SendMessage(hMain, WM_COMMAND, MAKELPARAM(TXT_TEXTURECOLS, EN_KILLFOCUS), 0);
+              SendMessage(hMain, WM_COMMAND, MAKELPARAM(TXT_TEXTUREROWS, EN_KILLFOCUS), 0);
+
+              return TRUE;
           case RAD_ALL:
            info->ModAll=TRUE;
            EnableWindow(GetDlgItem(hMain,TXT_WIDTH),FALSE);
            EnableWindow(GetDlgItem(hMain,STA_WIDTH),FALSE);
-           SendDlgItemMessage(hMain,RAD_SEL,WM_SETTEXT,0,(LPARAM)"Adjust Selection Only");
+           SendDlgItemMessage(hMain,RAD_SEL,WM_SETTEXT,0,(LPARAM)L"Adjust Selection Only");
            SendMessage(hMain,WM_APP+1,0,0);
            CreateFontMap();
            return TRUE;
@@ -569,7 +642,7 @@ BOOL CALLBACK MainProc(HWND hDlg, UINT msg, WPARAM wParam, LPARAM lParam)
            SendMessage(hMain,WM_APP+1,0,0);
            EnableWindow(GetDlgItem(hMain,TXT_WIDTH),TRUE);
            EnableWindow(GetDlgItem(hMain,STA_WIDTH),TRUE);
-           wsprintf(Text,"Adjust Selection (%d) Only",info->Select+Fnt->GetBaseChar());
+           wsprintf(Text,L"Adjust Selection (%d) Only",info->Select+Fnt->GetBaseChar());
            SendDlgItemMessage(hMain,RAD_SEL,WM_SETTEXT,0,(LPARAM)Text);
            CreateFontMap();
            return TRUE;
@@ -616,10 +689,10 @@ BOOL CALLBACK MainProc(HWND hDlg, UINT msg, WPARAM wParam, LPARAM lParam)
             else
              SendDlgItemMessage(hDlg,CBO_IMGYRES,CB_SETCURSEL,0,0);
 
-           wsprintf(Text,"%d",Fnt->GetSize(CELLHEIGHT));
+           wsprintf(Text,L"%d",Fnt->GetSize(CELLHEIGHT));
            SendDlgItemMessage(hMain,TXT_CELLHEIGHT,WM_SETTEXT,0,(LPARAM)Text);
 
-           wsprintf(Text,"%d",Fnt->GetSize(CELLWIDTH));
+           wsprintf(Text,L"%d",Fnt->GetSize(CELLWIDTH));
            SendDlgItemMessage(hMain,TXT_CELLWIDTH,WM_SETTEXT,0,(LPARAM)Text);
 
            info->MaxChars=Fnt->GetSize(MAXCHARS);
@@ -660,13 +733,13 @@ BOOL CALLBACK MainProc(HWND hDlg, UINT msg, WPARAM wParam, LPARAM lParam)
            Fnt->SetFontName(Text);
 
            Fnt->SetBaseChar(32);
-           wsprintf(Text,"%d",32);
+           wsprintf(Text,L"%d",32);
            SendDlgItemMessage(hMain,TXT_START,WM_SETTEXT,0,(LPARAM)Text);
            
-           wsprintf(Text,"%d",Fnt->GetFontHeight());
+           wsprintf(Text,L"%d",Fnt->GetFontHeight());
            SendDlgItemMessage(hMain,TXT_FONTHEIGHT,WM_SETTEXT,0,(LPARAM)Text);
 
-           wsprintf(Text,"%d",Fnt->GetFontWidth());
+           wsprintf(Text,L"%d",Fnt->GetFontWidth());
            SendDlgItemMessage(hMain,TXT_FONTWIDTH,WM_SETTEXT,0,(LPARAM)Text);
 
            Fnt->SetFontWeight(FW_NORMAL);
@@ -686,7 +759,7 @@ BOOL CALLBACK MainProc(HWND hDlg, UINT msg, WPARAM wParam, LPARAM lParam)
            info->Select=0;
            SendDlgItemMessage(hMain,RAD_ALL,BM_SETCHECK,BST_CHECKED,0);
            SendDlgItemMessage(hMain,RAD_SEL,BM_SETCHECK,BST_UNCHECKED,0);
-           SendDlgItemMessage(hMain,RAD_SEL,WM_SETTEXT,0,(LPARAM)"Adjust Selection Only");
+           SendDlgItemMessage(hMain,RAD_SEL,WM_SETTEXT,0,(LPARAM)L"Adjust Selection Only");
            EnableWindow(GetDlgItem(hMain,TXT_WIDTH),FALSE);
            EnableWindow(GetDlgItem(hMain,STA_WIDTH),FALSE);
            SendMessage(hMain,WM_APP+1,0,0);
@@ -696,8 +769,8 @@ BOOL CALLBACK MainProc(HWND hDlg, UINT msg, WPARAM wParam, LPARAM lParam)
 
           case ID_FILE_SAVEBFF:
            lstrcpy(Text,Fnt->GetFontName());
-           lstrcat(Text,".bff");
-            if(GetTargetName(Text,"Save BFF","Bitmap Font Files (BFF)\0*.bff\0All Files\0*.*\0\0","bff"))
+           lstrcat(Text,L".bff");
+            if(GetTargetName(Text,L"Save BFF",L"Bitmap Font Files (BFF)\0*.bff\0All Files\0*.*\0\0",L"bff"))
              {
                if(CheckOverwrite(Text))
                 {
@@ -723,9 +796,9 @@ BOOL CALLBACK MainProc(HWND hDlg, UINT msg, WPARAM wParam, LPARAM lParam)
                       }
 
                     if(RetVal)
-                     MessageBox(hDlg,"Save Complete","File Operation",MB_OK);
+                     MessageBox(hDlg,L"Save Complete",L"File Operation",MB_OK);
                     else
-                     MessageBox(hDlg,"Save Failed","Error",MB_OK | MB_ICONEXCLAMATION);
+                     MessageBox(hDlg,L"Save Failed",L"Error",MB_OK | MB_ICONEXCLAMATION);
                    }
                 }
              }
@@ -733,16 +806,16 @@ BOOL CALLBACK MainProc(HWND hDlg, UINT msg, WPARAM wParam, LPARAM lParam)
 
           case ID_IMPORT_FONTDATA:
            Text[0]=NULL;
-            if(GetSourceName(Text,"Import Font Data","Font Data Files (CSV)\0*.csv\0All Files\0*.*\0\0","csv"))
+            if(GetSourceName(Text,L"Import Font Data",L"Font Data Files (CSV)\0*.csv\0All Files\0*.*\0\0",L"csv"))
              { 
                if(Fnt->ImportData(Text))
                 {
                  // Set font face
-                 wsprintf(Text,"%d",Fnt->GetFontName());
+                 wsprintf(Text,L"%d",Fnt->GetFontName());
                  Index=SendDlgItemMessage(hMain,CBO_FONTS,CB_FINDSTRING,-1,(LPARAM)Text);
 
                  // Set Start Char
-                 wsprintf(Text,"%d",Fnt->GetBaseChar());
+                 wsprintf(Text,L"%d",Fnt->GetBaseChar());
                  SendDlgItemMessage(hMain,TXT_START,WM_SETTEXT,0,(LPARAM)Text);
 
                  // Set Bold Checkbox
@@ -761,78 +834,78 @@ BOOL CALLBACK MainProc(HWND hDlg, UINT msg, WPARAM wParam, LPARAM lParam)
                 }
                else
                 {
-                 MessageBox(hDlg,"Import Failed","Error",MB_OK | MB_ICONEXCLAMATION);
+                 MessageBox(hDlg,L"Import Failed",L"Error",MB_OK | MB_ICONEXCLAMATION);
                 }
              }
            return TRUE;
 
           case ID_EXPORT_BITMAP:
-           lstrcpy(Text,"ExportedFont.bmp");
-            if(GetTargetName(Text,"Export BMP","Bitmap Images (BMP)\0*.bmp\0All Files\0*.*\0\0","bmp"))
+           lstrcpy(Text,L"ExportedFont.bmp");
+            if(GetTargetName(Text,L"Export BMP",L"Bitmap Images (BMP)\0*.bmp\0All Files\0*.*\0\0",L"bmp"))
              {
                if(CheckOverwrite(Text))
                 {
                  if(Fnt->ExportMap(Text,EXPORT_BMP)==SBM_OK)
-                  MessageBox(hDlg,"Export Complete","BMP Export",MB_OK);
+                  MessageBox(hDlg,L"Export Complete",L"BMP Export",MB_OK);
                  else
-                  MessageBox(hDlg,"Export Failed","Error",MB_OK | MB_ICONEXCLAMATION);
+                  MessageBox(hDlg,L"Export Failed",L"Error",MB_OK | MB_ICONEXCLAMATION);
                 }
              }
            return TRUE;
 
           case ID_EXPORT_TARGA:
-           lstrcpy(Text,"ExportedFont.tga");
-            if(GetTargetName(Text,"Export TGA","Targa Images (TGA)\0*.tga\0All Files\0*.*\0\0","tga"))
+           lstrcpy(Text,L"ExportedFont.tga");
+            if(GetTargetName(Text,L"Export TGA",L"Targa Images (TGA)\0*.tga\0All Files\0*.*\0\0",L"tga"))
              {
                if(CheckOverwrite(Text))
                 {
                   if(Fnt->ExportMap(Text,EXPORT_TGA)==SBM_OK)
-                   MessageBox(hDlg,"Export Complete","TGA Export",MB_OK);
+                   MessageBox(hDlg,L"Export Complete",L"TGA Export",MB_OK);
                   else
-                   MessageBox(hDlg,"Export Failed","Error",MB_OK | MB_ICONEXCLAMATION);
+                   MessageBox(hDlg,L"Export Failed",L"Error",MB_OK | MB_ICONEXCLAMATION);
                 }
              }
            return TRUE;
 
           case ID_EXPORT_TARGA32:
-           lstrcpy(Text,"ExportedFont.tga");
-            if(GetTargetName(Text,"Export TGA","Targa Images (TGA)\0*.tga\0All Files\0*.*\0\0","tga"))
+           lstrcpy(Text,L"ExportedFont.tga");
+            if(GetTargetName(Text,L"Export TGA",L"Targa Images (TGA)\0*.tga\0All Files\0*.*\0\0",L"tga"))
              {
                if(CheckOverwrite(Text))
                 {
                   if(Fnt->ExportMap(Text,EXPORT_TGA32)==SBM_OK)
-                   MessageBox(hDlg,"Export Complete","TGA Export",MB_OK);
+                   MessageBox(hDlg,L"Export Complete",L"TGA Export",MB_OK);
                   else
-                   MessageBox(hDlg,"Export Failed","Error",MB_OK | MB_ICONEXCLAMATION);
+                   MessageBox(hDlg,L"Export Failed",L"Error",MB_OK | MB_ICONEXCLAMATION);
                 }
              }
            return TRUE;
 
 
           case ID_EXPORT_FONTDATA:
-           lstrcpy(Text,"FontData.csv");
-            if(GetTargetName(Text,"Export Font Data","Comma Separated Values (CSV)\0*.csv\0All Files\0*.*\0\0","csv"))
+           lstrcpy(Text,L"FontData.csv");
+            if(GetTargetName(Text,L"Export Font Data",L"Comma Separated Values (CSV)\0*.csv\0All Files\0*.*\0\0",L"csv"))
              {
                if(CheckOverwrite(Text))
                 {
                   if(Fnt->SaveFont(SAVE_CSV,Text))
-                   MessageBox(hDlg,"Export Complete","Font Data Export",MB_OK);
+                   MessageBox(hDlg,L"Export Complete",L"Font Data Export",MB_OK);
                   else
-                   MessageBox(hDlg,"Export Failed","Error",MB_OK | MB_ICONEXCLAMATION);
+                   MessageBox(hDlg,L"Export Failed",L"Error",MB_OK | MB_ICONEXCLAMATION);
                 }
              }
            return TRUE;
 
           case ID_EXPORT_BIN:
-           lstrcpy(Text,"FontData.dat");
-            if(GetTargetName(Text,"Export Binary Font Data","Binary Font Files (dat)\0*.dat\0All Files\0*.*\0\0","dat"))
+           lstrcpy(Text,L"FontData.dat");
+            if(GetTargetName(Text,L"Export Binary Font Data",L"Binary Font Files (dat)\0*.dat\0All Files\0*.*\0\0",L"dat"))
              {
                if(CheckOverwrite(Text))
                 {
                  if(Fnt->SaveFont(SAVE_BIN,Text))
-                   MessageBox(hDlg,"Export Complete","Font Data Export",MB_OK);
+                   MessageBox(hDlg,L"Export Complete",L"Font Data Export",MB_OK);
                   else
-                   MessageBox(hDlg,"Export Failed","Error",MB_OK | MB_ICONEXCLAMATION);
+                   MessageBox(hDlg,L"Export Failed",L"Error",MB_OK | MB_ICONEXCLAMATION);
                 }
              }
            return TRUE;
@@ -953,8 +1026,8 @@ BOOL CALLBACK MainProc(HWND hDlg, UINT msg, WPARAM wParam, LPARAM lParam)
            return TRUE;
 
           case ID_HELP_CONTENTS:
-            if((int)ShellExecute(hDlg,"open","CBFGHelp.chm",NULL,NULL,SW_SHOWMAXIMIZED)<32)
-             MessageBox(hDlg,"Unable to open Help file","Error",MB_OK | MB_ICONERROR);
+            if((int)ShellExecute(hDlg,L"open",L"CBFGHelp.chm",NULL,NULL,SW_SHOWMAXIMIZED)<32)
+             MessageBox(hDlg,L"Unable to open Help file",L"Error",MB_OK | MB_ICONERROR);
            return TRUE;
 
           case ID_HELP_ABOUT:
@@ -968,10 +1041,25 @@ BOOL CALLBACK MainProc(HWND hDlg, UINT msg, WPARAM wParam, LPARAM lParam)
           case EN_KILLFOCUS:
             switch(LOWORD(wParam))
              {
-              case TXT_CELLWIDTH:
+            case TXT_TEXTURECOLS:
+                SendDlgItemMessage(hDlg, TXT_TEXTURECOLS, WM_GETTEXT, 256, (LPARAM)Text);
+                tVal = Fnt->SetSize(TEXTURECOLS, _wtoi(Text));
+                wsprintf(Text, L"%d", tVal);
+                SendDlgItemMessage(hDlg, TXT_TEXTURECOLS, WM_SETTEXT, 0, (LPARAM)Text);
+                CreateFontMap();
+                return TRUE;
+            case TXT_TEXTUREROWS:
+                SendDlgItemMessage(hDlg, TXT_TEXTUREROWS, WM_GETTEXT, 256, (LPARAM)Text);
+                tVal = Fnt->SetSize(TEXTUREROWS, _wtoi(Text));
+                wsprintf(Text, L"%d", tVal);
+                SendDlgItemMessage(hDlg, TXT_TEXTUREROWS, WM_SETTEXT, 0, (LPARAM)Text);
+                CreateFontMap();
+                return TRUE;
+
+            case TXT_CELLWIDTH:
                SendDlgItemMessage(hDlg,TXT_CELLWIDTH,WM_GETTEXT,256,(LPARAM)Text);
-               tVal=Fnt->SetSize(CELLWIDTH,atoi(Text));
-			            wsprintf(Text,"%d",tVal);
+               tVal=Fnt->SetSize(CELLWIDTH, _wtoi(Text));
+			            wsprintf(Text,L"%d",tVal);
 			            SendDlgItemMessage(hDlg,TXT_CELLWIDTH,WM_SETTEXT,0,(LPARAM)Text);
                info->MaxChars=Fnt->GetSize(MAXCHARS);
                CreateFontMap();
@@ -979,8 +1067,8 @@ BOOL CALLBACK MainProc(HWND hDlg, UINT msg, WPARAM wParam, LPARAM lParam)
 
               case TXT_CELLHEIGHT:
                SendDlgItemMessage(hDlg,TXT_CELLHEIGHT,WM_GETTEXT,256,(LPARAM)Text);
-               tVal=Fnt->SetSize(CELLHEIGHT,atoi(Text));
-	              wsprintf(Text,"%d",tVal);
+               tVal=Fnt->SetSize(CELLHEIGHT, _wtoi(Text));
+	              wsprintf(Text,L"%d",tVal);
 			            SendDlgItemMessage(hDlg,TXT_CELLHEIGHT,WM_SETTEXT,0,(LPARAM)Text);
                info->MaxChars=Fnt->GetSize(MAXCHARS);
                CreateFontMap();
@@ -988,24 +1076,24 @@ BOOL CALLBACK MainProc(HWND hDlg, UINT msg, WPARAM wParam, LPARAM lParam)
 
               case TXT_FONTWIDTH:
                SendDlgItemMessage(hDlg,TXT_FONTWIDTH,WM_GETTEXT,256,(LPARAM)Text);
-               tVal=Fnt->SetFontWidth(atoi(Text));
-			            wsprintf(Text,"%d",tVal);
+               tVal=Fnt->SetFontWidth(_wtoi(Text));
+			            wsprintf(Text,L"%d",tVal);
 			            SendDlgItemMessage(hDlg,TXT_FONTWIDTH,WM_SETTEXT,0,(LPARAM)Text);
                CreateFontMap();
                return TRUE;
 
               case TXT_FONTHEIGHT:
                SendDlgItemMessage(hDlg,TXT_FONTHEIGHT,WM_GETTEXT,256,(LPARAM)Text);
-               tVal=Fnt->SetFontHeight(atoi(Text));
-	              wsprintf(Text,"%d",tVal);
+               tVal=Fnt->SetFontHeight(_wtoi(Text));
+	              wsprintf(Text,L"%d",tVal);
 			            SendDlgItemMessage(hDlg,TXT_FONTHEIGHT,WM_SETTEXT,0,(LPARAM)Text);
                CreateFontMap();
                return TRUE;
 
               case TXT_START:
                SendDlgItemMessage(hDlg,TXT_START,WM_GETTEXT,256,(LPARAM)Text);
-               tVal=Fnt->SetBaseChar(atoi(Text));
-	              wsprintf(Text,"%d",tVal);
+               tVal=Fnt->SetBaseChar(_wtoi(Text));
+	              wsprintf(Text,L"%d",tVal);
 			            SendDlgItemMessage(hDlg,TXT_START,WM_SETTEXT,0,(LPARAM)Text);
                CreateFontMap();
                return TRUE;
@@ -1014,18 +1102,18 @@ BOOL CALLBACK MainProc(HWND hDlg, UINT msg, WPARAM wParam, LPARAM lParam)
                if(info->ModAll)
                 {
                  SendDlgItemMessage(hDlg,TXT_XADJ,WM_GETTEXT,256,(LPARAM)Text);
-                 tVal=Limit(atoi(Text));
+                 tVal=Limit(_wtoi(Text));
                  tVal=Fnt->SetGlobal(HOFFSET,tVal);
-  	              wsprintf(Text,"%d",tVal);
+  	              wsprintf(Text,L"%d",tVal);
 		  	            SendDlgItemMessage(hDlg,TXT_XADJ,WM_SETTEXT,0,(LPARAM)Text);
                  CreateFontMap();
                 }
                else
                 {
                  SendDlgItemMessage(hDlg,TXT_XADJ,WM_GETTEXT,256,(LPARAM)Text);
-                 tVal=Limit(atoi(Text));
+                 tVal=Limit(_wtoi(Text));
                  tVal=Fnt->SetCharVal(info->Select+Fnt->GetBaseChar(),HOFFSET,tVal);
-  	              wsprintf(Text,"%d",tVal);
+  	              wsprintf(Text,L"%d",tVal);
 		  	            SendDlgItemMessage(hDlg,TXT_XADJ,WM_SETTEXT,0,(LPARAM)Text);
                  CreateFontMap();
                 }
@@ -1034,18 +1122,18 @@ BOOL CALLBACK MainProc(HWND hDlg, UINT msg, WPARAM wParam, LPARAM lParam)
                if(info->ModAll)
                 {
                  SendDlgItemMessage(hDlg,TXT_YADJ,WM_GETTEXT,256,(LPARAM)Text);
-                 tVal=Limit(atoi(Text));
+                 tVal=Limit(_wtoi(Text));
                  tVal=Fnt->SetGlobal(VOFFSET,tVal);
-  	              wsprintf(Text,"%d",tVal);
+  	              wsprintf(Text,L"%d",tVal);
 		  	            SendDlgItemMessage(hDlg,TXT_YADJ,WM_SETTEXT,0,(LPARAM)Text);
                  CreateFontMap();
                 }
                else
                 {
                  SendDlgItemMessage(hDlg,TXT_YADJ,WM_GETTEXT,256,(LPARAM)Text);
-                 tVal=Limit(atoi(Text));
+                 tVal=Limit(_wtoi(Text));
                  tVal=Fnt->SetCharVal(info->Select+Fnt->GetBaseChar(),VOFFSET,tVal);
-  	              wsprintf(Text,"%d",tVal);
+  	              wsprintf(Text,L"%d",tVal);
 		  	            SendDlgItemMessage(hDlg,TXT_YADJ,WM_SETTEXT,0,(LPARAM)Text);
                  CreateFontMap();
                 }
@@ -1055,25 +1143,34 @@ BOOL CALLBACK MainProc(HWND hDlg, UINT msg, WPARAM wParam, LPARAM lParam)
                if(info->ModAll)
                 {
                  SendDlgItemMessage(hDlg,TXT_WADJ,WM_GETTEXT,256,(LPARAM)Text);
-                 tVal=Limit(atoi(Text));
+                 tVal=Limit(_wtoi(Text));
                  tVal=Fnt->SetGlobal(WIDTH,tVal);
-  	              wsprintf(Text,"%d",tVal);
+  	              wsprintf(Text,L"%d",tVal);
 		  	            SendDlgItemMessage(hDlg,TXT_WADJ,WM_SETTEXT,0,(LPARAM)Text);
                  CreateFontMap();
                 }
                else
                 {
                  SendDlgItemMessage(hDlg,TXT_WADJ,WM_GETTEXT,256,(LPARAM)Text);
-                 tVal=Limit(atoi(Text));
+                 tVal=Limit(_wtoi(Text));
                  tVal=Fnt->SetCharVal(info->Select+Fnt->GetBaseChar(),WOFFSET,tVal);
-  	              wsprintf(Text,"%d",tVal);
+  	              wsprintf(Text,L"%d",tVal);
 		  	            SendDlgItemMessage(hDlg,TXT_WADJ,WM_SETTEXT,0,(LPARAM)Text);
                
                  CreateFontMap();
-                 wsprintf(Text,"%d",Fnt->GetCharVal(info->Select+Fnt->GetBaseChar(),EWIDTH));
+                 wsprintf(Text,L"%d",Fnt->GetCharVal(info->Select+Fnt->GetBaseChar(),EWIDTH));
                  SendDlgItemMessage(hMain,TXT_WIDTH,WM_SETTEXT,0,(LPARAM)Text);
                 }
               return TRUE;
+              case TXT_ALPHABET:
+                  SendDlgItemMessage(hDlg, TXT_ALPHABET, WM_GETTEXT, 256, (LPARAM)Text);
+                  Fnt->SetAlphabet(Text);
+                  wsprintf(Text, L"%s", Fnt->GetAlphabet());
+                  SendDlgItemMessage(hDlg, TXT_ALPHABET, WM_SETTEXT, 0, (LPARAM)Text);
+                  CreateFontMap();
+
+                  return TRUE;
+
              }
           return FALSE;
           break; // End EN_KILLFOCUS

@@ -55,15 +55,16 @@ class SBM_Image
                 unsigned char SatR, unsigned char SatG, unsigned char SatB);   
                      
 
-   int SaveBMP(char *filename);
-   int SavePCX(char *filename);
-   int SaveTGA(char *filename);
-   int SaveRaw(char *filename);
+   int SaveBMP(wchar_t*filename);
+   int SavePCX(wchar_t*filename);
+   int SaveTGA(wchar_t*filename);
+   int SaveRaw(wchar_t*filename);
 
   private:
    short Width,Height;
    char BPP,Encode,Planes;
-   unsigned long FileSize,ImageSize,Offset;
+   streamoff FileSize;
+   unsigned long ImageSize,Offset;
    unsigned char *ImgData,*PalData,*FileData;
    short BPL;
 

@@ -11,14 +11,14 @@ extern AppInfo *info;
 
 void SetConfigRGB(HWND Win, BFG_RGB Cols)
   {
-   char Text[256];
-   wsprintf(Text,"%d",Cols.Red);
+    wchar_t Text[256];
+   wsprintf(Text,L"%d",Cols.Red);
    SendDlgItemMessage(Win,TXT_RED,WM_SETTEXT,0,(LPARAM)Text);
    SendDlgItemMessage(Win,SLD_RED,TBM_SETPOS,TRUE,(LPARAM)Cols.Red);
-   wsprintf(Text,"%d",Cols.Green);
+   wsprintf(Text,L"%d",Cols.Green);
    SendDlgItemMessage(Win,TXT_GREEN,WM_SETTEXT,0,(LPARAM)Text);
    SendDlgItemMessage(Win,SLD_GREEN,TBM_SETPOS,TRUE,(LPARAM)Cols.Green);
-   wsprintf(Text,"%d",Cols.Blue);
+   wsprintf(Text,L"%d",Cols.Blue);
    SendDlgItemMessage(Win,TXT_BLUE,WM_SETTEXT,0,(LPARAM)Text);
    SendDlgItemMessage(Win,SLD_BLUE,TBM_SETPOS,TRUE,(LPARAM)Cols.Blue);
    InvalidateRect(GetDlgItem(Win,ODR_COLOR),NULL,FALSE);
@@ -31,7 +31,7 @@ BOOL CALLBACK ConfigWinProc(HWND hDlg, UINT msg, WPARAM wParam, LPARAM lParam)
   RECT rcArea;
   HBRUSH hBr;
   int Sel,Val,Red,Green,Blue;
-  char Text[256];
+  wchar_t Text[256];
   static AppConfig lCfg;
 
   switch(msg)
@@ -56,11 +56,11 @@ BOOL CALLBACK ConfigWinProc(HWND hDlg, UINT msg, WPARAM wParam, LPARAM lParam)
      lCfg.SelCol=Fnt->GetCol(SELCOL);
 
      // Populate item combo
-     SendDlgItemMessage(hDlg,CBO_CFG_ITEM,CB_ADDSTRING,0,(LPARAM)"Grid Lines");
-     SendDlgItemMessage(hDlg,CBO_CFG_ITEM,CB_ADDSTRING,0,(LPARAM)"Width Marker");
-     SendDlgItemMessage(hDlg,CBO_CFG_ITEM,CB_ADDSTRING,0,(LPARAM)"Selection Marker");
-     SendDlgItemMessage(hDlg,CBO_CFG_ITEM,CB_ADDSTRING,0,(LPARAM)"Font Colour");
-     SendDlgItemMessage(hDlg,CBO_CFG_ITEM,CB_ADDSTRING,0,(LPARAM)"Background Colour");
+     SendDlgItemMessage(hDlg,CBO_CFG_ITEM,CB_ADDSTRING,0,(LPARAM)L"Grid Lines");
+     SendDlgItemMessage(hDlg,CBO_CFG_ITEM,CB_ADDSTRING,0,(LPARAM)L"Width Marker");
+     SendDlgItemMessage(hDlg,CBO_CFG_ITEM,CB_ADDSTRING,0,(LPARAM)L"Selection Marker");
+     SendDlgItemMessage(hDlg,CBO_CFG_ITEM,CB_ADDSTRING,0,(LPARAM)L"Font Colour");
+     SendDlgItemMessage(hDlg,CBO_CFG_ITEM,CB_ADDSTRING,0,(LPARAM)L"Background Colour");
      SendDlgItemMessage(hDlg,CBO_CFG_ITEM,CB_SETCURSEL,0,0);
      
      // Set range of sliders
@@ -72,25 +72,25 @@ BOOL CALLBACK ConfigWinProc(HWND hDlg, UINT msg, WPARAM wParam, LPARAM lParam)
      SetConfigRGB(hDlg,lCfg.GridCol);
 
      // Populate image size combos
-     SendDlgItemMessage(hDlg,CBO_CFG_IMGXSIZE,CB_ADDSTRING,0,(LPARAM)"16");
-     SendDlgItemMessage(hDlg,CBO_CFG_IMGXSIZE,CB_ADDSTRING,0,(LPARAM)"32");
-     SendDlgItemMessage(hDlg,CBO_CFG_IMGXSIZE,CB_ADDSTRING,0,(LPARAM)"64");
-     SendDlgItemMessage(hDlg,CBO_CFG_IMGXSIZE,CB_ADDSTRING,0,(LPARAM)"128");
-     SendDlgItemMessage(hDlg,CBO_CFG_IMGXSIZE,CB_ADDSTRING,0,(LPARAM)"256");
-     SendDlgItemMessage(hDlg,CBO_CFG_IMGXSIZE,CB_ADDSTRING,0,(LPARAM)"512");
-     SendDlgItemMessage(hDlg,CBO_CFG_IMGXSIZE,CB_ADDSTRING,0,(LPARAM)"1024");
-     SendDlgItemMessage(hDlg,CBO_CFG_IMGXSIZE,CB_ADDSTRING,0,(LPARAM)"2048");
-     SendDlgItemMessage(hDlg,CBO_CFG_IMGXSIZE,CB_ADDSTRING,0,(LPARAM)"4096");
+     SendDlgItemMessage(hDlg,CBO_CFG_IMGXSIZE,CB_ADDSTRING,0,(LPARAM)L"16");
+     SendDlgItemMessage(hDlg,CBO_CFG_IMGXSIZE,CB_ADDSTRING,0,(LPARAM)L"32");
+     SendDlgItemMessage(hDlg,CBO_CFG_IMGXSIZE,CB_ADDSTRING,0,(LPARAM)L"64");
+     SendDlgItemMessage(hDlg,CBO_CFG_IMGXSIZE,CB_ADDSTRING,0,(LPARAM)L"128");
+     SendDlgItemMessage(hDlg,CBO_CFG_IMGXSIZE,CB_ADDSTRING,0,(LPARAM)L"256");
+     SendDlgItemMessage(hDlg,CBO_CFG_IMGXSIZE,CB_ADDSTRING,0,(LPARAM)L"512");
+     SendDlgItemMessage(hDlg,CBO_CFG_IMGXSIZE,CB_ADDSTRING,0,(LPARAM)L"1024");
+     SendDlgItemMessage(hDlg,CBO_CFG_IMGXSIZE,CB_ADDSTRING,0,(LPARAM)L"2048");
+     SendDlgItemMessage(hDlg,CBO_CFG_IMGXSIZE,CB_ADDSTRING,0,(LPARAM)L"4096");
 
-     SendDlgItemMessage(hDlg,CBO_CFG_IMGYSIZE,CB_ADDSTRING,0,(LPARAM)"16");
-     SendDlgItemMessage(hDlg,CBO_CFG_IMGYSIZE,CB_ADDSTRING,0,(LPARAM)"32");
-     SendDlgItemMessage(hDlg,CBO_CFG_IMGYSIZE,CB_ADDSTRING,0,(LPARAM)"64");
-     SendDlgItemMessage(hDlg,CBO_CFG_IMGYSIZE,CB_ADDSTRING,0,(LPARAM)"128");
-     SendDlgItemMessage(hDlg,CBO_CFG_IMGYSIZE,CB_ADDSTRING,0,(LPARAM)"256");
-     SendDlgItemMessage(hDlg,CBO_CFG_IMGYSIZE,CB_ADDSTRING,0,(LPARAM)"512");
-     SendDlgItemMessage(hDlg,CBO_CFG_IMGYSIZE,CB_ADDSTRING,0,(LPARAM)"1024");
-     SendDlgItemMessage(hDlg,CBO_CFG_IMGYSIZE,CB_ADDSTRING,0,(LPARAM)"2048");
-     SendDlgItemMessage(hDlg,CBO_CFG_IMGYSIZE,CB_ADDSTRING,0,(LPARAM)"4096");
+     SendDlgItemMessage(hDlg,CBO_CFG_IMGYSIZE,CB_ADDSTRING,0,(LPARAM)L"16");
+     SendDlgItemMessage(hDlg,CBO_CFG_IMGYSIZE,CB_ADDSTRING,0,(LPARAM)L"32");
+     SendDlgItemMessage(hDlg,CBO_CFG_IMGYSIZE,CB_ADDSTRING,0,(LPARAM)L"64");
+     SendDlgItemMessage(hDlg,CBO_CFG_IMGYSIZE,CB_ADDSTRING,0,(LPARAM)L"128");
+     SendDlgItemMessage(hDlg,CBO_CFG_IMGYSIZE,CB_ADDSTRING,0,(LPARAM)L"256");
+     SendDlgItemMessage(hDlg,CBO_CFG_IMGYSIZE,CB_ADDSTRING,0,(LPARAM)L"512");
+     SendDlgItemMessage(hDlg,CBO_CFG_IMGYSIZE,CB_ADDSTRING,0,(LPARAM)L"1024");
+     SendDlgItemMessage(hDlg,CBO_CFG_IMGYSIZE,CB_ADDSTRING,0,(LPARAM)L"2048");
+     SendDlgItemMessage(hDlg,CBO_CFG_IMGYSIZE,CB_ADDSTRING,0,(LPARAM)L"4096");
 
       if(lCfg.ImgWidth==32)
        SendDlgItemMessage(hDlg,CBO_CFG_IMGXSIZE,CB_SETCURSEL,1,0);
@@ -135,13 +135,13 @@ BOOL CALLBACK ConfigWinProc(HWND hDlg, UINT msg, WPARAM wParam, LPARAM lParam)
      SendDlgItemMessage(hDlg,CHK_CFG_WIDTH,BM_SETCHECK,lCfg.Flags & SHOW_WIDTH,0);
 
      // Populate textboxes
-     wsprintf(Text,"%d",lCfg.CellWidth);
+     wsprintf(Text,L"%d",lCfg.CellWidth);
      SendDlgItemMessage(hDlg,TXT_CFG_CELLWIDTH,WM_SETTEXT,0,(LPARAM)Text);
-     wsprintf(Text,"%d",lCfg.CellHeight);
+     wsprintf(Text,L"%d",lCfg.CellHeight);
      SendDlgItemMessage(hDlg,TXT_CFG_CELLHEIGHT,WM_SETTEXT,0,(LPARAM)Text);
-     wsprintf(Text,"%d",lCfg.FontHeight);
+     wsprintf(Text,L"%d",lCfg.FontHeight);
      SendDlgItemMessage(hDlg,TXT_CFG_FONTHEIGHT,WM_SETTEXT,0,(LPARAM)Text);
-     wsprintf(Text,"%d",lCfg.FontWidth);
+     wsprintf(Text,L"%d",lCfg.FontWidth);
      SendDlgItemMessage(hDlg,TXT_CFG_FONTWIDTH,WM_SETTEXT,0,(LPARAM)Text);
 
      // Set spin ranges
@@ -176,7 +176,7 @@ BOOL CALLBACK ConfigWinProc(HWND hDlg, UINT msg, WPARAM wParam, LPARAM lParam)
       if((HWND)lParam==GetDlgItem(hDlg,SLD_RED))
        {
         Red=SendDlgItemMessage(hDlg,SLD_RED,TBM_GETPOS,0,0);
-        wsprintf(Text,"%d",Red);
+        wsprintf(Text,L"%d",Red);
         SendDlgItemMessage(hDlg,TXT_RED,WM_SETTEXT,0,(LPARAM)Text);
         
          switch(Sel)
@@ -206,7 +206,7 @@ BOOL CALLBACK ConfigWinProc(HWND hDlg, UINT msg, WPARAM wParam, LPARAM lParam)
       if((HWND)lParam==GetDlgItem(hDlg,SLD_GREEN))
        {
         Green=SendDlgItemMessage(hDlg,SLD_GREEN,TBM_GETPOS,0,0);
-        wsprintf(Text,"%d",Green);
+        wsprintf(Text,L"%d",Green);
         SendDlgItemMessage(hDlg,TXT_GREEN,WM_SETTEXT,0,(LPARAM)Text);
         
          switch(Sel)
@@ -236,7 +236,7 @@ BOOL CALLBACK ConfigWinProc(HWND hDlg, UINT msg, WPARAM wParam, LPARAM lParam)
       if((HWND)lParam==GetDlgItem(hDlg,SLD_BLUE))
        {
         Blue=SendDlgItemMessage(hDlg,SLD_BLUE,TBM_GETPOS,0,0);
-        wsprintf(Text,"%d",Blue);
+        wsprintf(Text,L"%d",Blue);
         SendDlgItemMessage(hDlg,TXT_BLUE,WM_SETTEXT,0,(LPARAM)Text);
         
          switch(Sel)
@@ -275,17 +275,17 @@ BOOL CALLBACK ConfigWinProc(HWND hDlg, UINT msg, WPARAM wParam, LPARAM lParam)
            {
             Sel=SendDlgItemMessage(hDlg,CBO_CFG_ITEM,CB_GETCURSEL,0,0);
             SendDlgItemMessage(hDlg,TXT_RED,WM_GETTEXT,256,(LPARAM)Text);
-            Val=atoi(Text);
+            Val= _wtoi(Text);
              if(Val<0)
               {
                Val=0;
-               wsprintf(Text,"%d",Val);
+               wsprintf(Text,L"%d",Val);
                SendDlgItemMessage(hDlg,TXT_RED,WM_SETTEXT,256,(LPARAM)Text);
               }
              if(Val>255)
               {
                Val=255; 
-               wsprintf(Text,"%d",Val);
+               wsprintf(Text,L"%d",Val);
                SendDlgItemMessage(hDlg,TXT_RED,WM_SETTEXT,256,(LPARAM)Text);
               }
 
@@ -320,17 +320,17 @@ BOOL CALLBACK ConfigWinProc(HWND hDlg, UINT msg, WPARAM wParam, LPARAM lParam)
            {
             Sel=SendDlgItemMessage(hDlg,CBO_CFG_ITEM,CB_GETCURSEL,0,0);
             SendDlgItemMessage(hDlg,TXT_GREEN,WM_GETTEXT,256,(LPARAM)Text);
-            Val=atoi(Text);
+            Val= _wtoi(Text);
              if(Val<0)
               {
                Val=0;
-               wsprintf(Text,"%d",Val);
+               wsprintf(Text,L"%d",Val);
                SendDlgItemMessage(hDlg,TXT_GREEN,WM_SETTEXT,256,(LPARAM)Text);
               }
              if(Val>255)
               {
                Val=255;
-               wsprintf(Text,"%d",Val);
+               wsprintf(Text,L"%d",Val);
                SendDlgItemMessage(hDlg,TXT_GREEN,WM_SETTEXT,256,(LPARAM)Text);
               }
 
@@ -365,17 +365,17 @@ BOOL CALLBACK ConfigWinProc(HWND hDlg, UINT msg, WPARAM wParam, LPARAM lParam)
            {
             Sel=SendDlgItemMessage(hDlg,CBO_CFG_ITEM,CB_GETCURSEL,0,0);
             SendDlgItemMessage(hDlg,TXT_BLUE,WM_GETTEXT,256,(LPARAM)Text);
-            Val=atoi(Text);
+            Val= _wtoi(Text);
              if(Val<0)
               {
                Val=0;
-               wsprintf(Text,"%d",Val);
+               wsprintf(Text,L"%d",Val);
                SendDlgItemMessage(hDlg,TXT_BLUE,WM_SETTEXT,256,(LPARAM)Text);
               }
              if(Val>255)
               {
                Val=255;
-               wsprintf(Text,"%d",Val);
+               wsprintf(Text,L"%d",Val);
                SendDlgItemMessage(hDlg,TXT_BLUE,WM_SETTEXT,256,(LPARAM)Text);
               }
 
@@ -408,18 +408,18 @@ BOOL CALLBACK ConfigWinProc(HWND hDlg, UINT msg, WPARAM wParam, LPARAM lParam)
           if(LOWORD(wParam)==TXT_CFG_CELLWIDTH)
            {
             SendDlgItemMessage(hDlg,TXT_CFG_CELLWIDTH,WM_GETTEXT,256,(LPARAM)Text);
-            Val=atoi(Text);
+            Val= _wtoi(Text);
              if(Val<8)
               {
                Val=8;
-               wsprintf(Text,"%d",Val);
+               wsprintf(Text,L"%d",Val);
                SendDlgItemMessage(hDlg,TXT_CFG_CELLWIDTH,WM_SETTEXT,256,(LPARAM)Text);
               }
              
              if(Val>128)
               {
                Val=128;
-               wsprintf(Text,"%d",Val);
+               wsprintf(Text,L"%d",Val);
                SendDlgItemMessage(hDlg,TXT_CFG_CELLWIDTH,WM_SETTEXT,256,(LPARAM)Text);
               }
 
@@ -429,18 +429,18 @@ BOOL CALLBACK ConfigWinProc(HWND hDlg, UINT msg, WPARAM wParam, LPARAM lParam)
           if(LOWORD(wParam)==TXT_CFG_CELLHEIGHT)
            {
             SendDlgItemMessage(hDlg,TXT_CFG_CELLHEIGHT,WM_GETTEXT,256,(LPARAM)Text);
-            Val=atoi(Text);
+            Val= _wtoi(Text);
              if(Val<8)
               {
                Val=8;
-               wsprintf(Text,"%d",Val);
+               wsprintf(Text,L"%d",Val);
                SendDlgItemMessage(hDlg,TXT_CFG_CELLHEIGHT,WM_SETTEXT,256,(LPARAM)Text);
               }
             
              if(Val>128)
               {
                Val=128;
-               wsprintf(Text,"%d",Val);
+               wsprintf(Text,L"%d",Val);
                SendDlgItemMessage(hDlg,TXT_CFG_CELLHEIGHT,WM_SETTEXT,256,(LPARAM)Text);
               }
 
@@ -450,18 +450,18 @@ BOOL CALLBACK ConfigWinProc(HWND hDlg, UINT msg, WPARAM wParam, LPARAM lParam)
           if(LOWORD(wParam)==TXT_CFG_FONTWIDTH)
            {
             SendDlgItemMessage(hDlg,TXT_CFG_FONTWIDTH,WM_GETTEXT,256,(LPARAM)Text);
-            Val=atoi(Text);
+            Val= _wtoi(Text);
              if(Val<0)
               {
                Val=0;
-               wsprintf(Text,"%d",Val);
+               wsprintf(Text,L"%d",Val);
                SendDlgItemMessage(hDlg,TXT_CFG_FONTWIDTH,WM_SETTEXT,256,(LPARAM)Text);
               }
 
              if(Val>100)
               {
                Val=100;
-               wsprintf(Text,"%d",Val);
+               wsprintf(Text,L"%d",Val);
                SendDlgItemMessage(hDlg,TXT_CFG_FONTWIDTH,WM_SETTEXT,256,(LPARAM)Text);
               }
 
@@ -471,18 +471,18 @@ BOOL CALLBACK ConfigWinProc(HWND hDlg, UINT msg, WPARAM wParam, LPARAM lParam)
           if(LOWORD(wParam)==TXT_CFG_FONTHEIGHT)
            {
             SendDlgItemMessage(hDlg,TXT_CFG_FONTHEIGHT,WM_GETTEXT,256,(LPARAM)Text);
-            Val=atoi(Text);
+            Val= _wtoi(Text);
              if(Val<1)
               {
                Val=1;
-               wsprintf(Text,"%d",Val);
+               wsprintf(Text,L"%d",Val);
                SendDlgItemMessage(hDlg,TXT_CFG_FONTHEIGHT,WM_SETTEXT,256,(LPARAM)Text);
               }
             
              if(Val>100)
               {
                Val=100;
-               wsprintf(Text,"%d",Val);
+               wsprintf(Text,L"%d",Val);
                SendDlgItemMessage(hDlg,TXT_CFG_FONTHEIGHT,WM_SETTEXT,256,(LPARAM)Text);
               }
 
@@ -679,7 +679,7 @@ BOOL CALLBACK ConfigWinProc(HWND hDlg, UINT msg, WPARAM wParam, LPARAM lParam)
 
            if(!Fnt->SaveConfig("bfg.cfg",info->Grid,info->wMarker))
 												{
-												 MessageBox(hDlg,"Unable to save config file","File Error",MB_OK|MB_ICONERROR);
+												 MessageBox(hDlg,L"Unable to save config file",L"File Error",MB_OK|MB_ICONERROR);
 													return 0;
 												}
 
@@ -687,8 +687,8 @@ BOOL CALLBACK ConfigWinProc(HWND hDlg, UINT msg, WPARAM wParam, LPARAM lParam)
           return 0;
 
          case IDDEFAULT:
-           if(MessageBox(hDlg,"Are you sure you want to revert to the default settings?",
-                              "Reset all?",MB_YESNO | MB_ICONQUESTION)==IDNO)
+           if(MessageBox(hDlg,L"Are you sure you want to revert to the default settings?",
+                              L"Reset all?",MB_YESNO | MB_ICONQUESTION)==IDNO)
             return TRUE;
 
           lCfg.ImgWidth=256;
@@ -698,13 +698,13 @@ BOOL CALLBACK ConfigWinProc(HWND hDlg, UINT msg, WPARAM wParam, LPARAM lParam)
           SendDlgItemMessage(hDlg,CBO_CFG_IMGYSIZE,CB_SETCURSEL,2,0);
 
           lCfg.CellHeight=32;
-          SendDlgItemMessage(hDlg,TXT_CFG_CELLHEIGHT,WM_SETTEXT,256,(LPARAM)"32");
+          SendDlgItemMessage(hDlg,TXT_CFG_CELLHEIGHT,WM_SETTEXT,256,(LPARAM)L"32");
           lCfg.CellWidth=32;
-          SendDlgItemMessage(hDlg,TXT_CFG_CELLWIDTH,WM_SETTEXT,256,(LPARAM)"32");
+          SendDlgItemMessage(hDlg,TXT_CFG_CELLWIDTH,WM_SETTEXT,256,(LPARAM)L"32");
           lCfg.FontHeight=20;
-          SendDlgItemMessage(hDlg,TXT_CFG_FONTHEIGHT,WM_SETTEXT,256,(LPARAM)"20");
+          SendDlgItemMessage(hDlg,TXT_CFG_FONTHEIGHT,WM_SETTEXT,256,(LPARAM)L"20");
           lCfg.FontWidth=0;
-          SendDlgItemMessage(hDlg,TXT_CFG_FONTWIDTH,WM_SETTEXT,256,(LPARAM)"0");
+          SendDlgItemMessage(hDlg,TXT_CFG_FONTWIDTH,WM_SETTEXT,256,(LPARAM)L"0");
 
           lCfg.BackCol = MakeRGB(0,0,0);
           lCfg.ForeCol=MakeRGB(255,255,255);

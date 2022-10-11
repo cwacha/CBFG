@@ -1,4 +1,5 @@
-#include "stdafx.h"
+﻿#include "stdafx.h"
+#include <wchar.h>
 #include <memory.h>
 #include "FontMapClass.h"
 #include "UtilFunctions.h"
@@ -9,6 +10,9 @@ BFontMap::BFontMap()
 
   BaseChar=32;
 
+  AutoSize = FALSE;
+  TextureCols = 32;
+  TextureRows = 8;
   MapWidth=256;
   MapHeight=256;
   CellHeight=32;
@@ -17,7 +21,10 @@ BFontMap::BFontMap()
   gVMod=0;
   gWidthMod=0;
   
-   for(loop=0;loop!=256;loop++)
+  useAlphabet = FALSE;
+  wcscpy_s(Alphabet, _countof(Alphabet), L" ☺☻♥♦♣♠•◘○◙♂♀♪♫☼►◄↕‼¶§▬↨↑↓→←∟↔▲▼ !\"#$%&'()*+,-./0123456789:;<=>?@ABCDEFGHIJKLMNOPQRSTUVWXYZ[\\]^_`abcdefghijklmnopqrstuvwxyz{|}~⌂ÇüéâäàåçêëèïîìÄÅÉæÆôöòûùÿÖÜ¢£¥₧ƒáíóúñÑªº¿⌐¬½¼¡«»░▒▓│┤╡╢╖╕╣║╗╝╜╛┐└┴┬├─┼╞╟╚╔╩╦╠═╬╧╨╤╥╙╘╒╓╫╪┘┌█▄▌▐▀αßΓπΣσµτΦΘΩδ∞φε∩≡±≥≤⌠⌡÷≈°∙·√ⁿ²■");
+
+    for(loop=0;loop!=256;loop++)
     {
      HMod[loop]=0;
      VMod[loop]=0;
@@ -67,29 +74,57 @@ BFontMap::~BFontMap()
   DeleteObject(fnt);
  }
 
+void BFontMap::SetAutoSize(bool NewAutoSize) {
+    AutoSize = NewAutoSize;
+    CalculateAutoSize();
+}
+
+bool BFontMap::GetAutoSize() {
+    return AutoSize;
+}
+
+void BFontMap::CalculateAutoSize() {
+    if (AutoSize) {
+        MapWidth = CellWidth * TextureCols;
+        MapHeight = CellHeight * TextureRows;
+    }
+    else {
+        TextureCols = MapWidth / CellWidth;
+        TextureRows = MapHeight / CellHeight;
+    }
+}
+
 int BFontMap::SetSize(int Which, int NewSize)
  {
    switch(Which)
     {
      case MAPWIDTH:
-       if(!IsPower(NewSize))
-        NewSize=256;
+         if (AutoSize)
+             MapWidth = NewSize;
+         else {
+             if (!IsPower(NewSize))
+                 NewSize = 256;
 
-      MapWidth=NewSize;
+             MapWidth = NewSize;
+         }
       return MapWidth;
 
 
      case MAPHEIGHT:
-       if(!IsPower(NewSize))
-        NewSize=256;
+         if (AutoSize)
+             MapHeight = NewSize;
+         else {
+             if (!IsPower(NewSize))
+                 NewSize = 256;
 
-      MapHeight=NewSize;
+             MapHeight = NewSize;
+         }
       return MapHeight;
 
 
      case CELLWIDTH:
-       if(NewSize<8)
-        CellWidth=8;
+       if(NewSize<6)
+        CellWidth=6;
        else if(NewSize>256)
         CellWidth=256;
        else
@@ -99,15 +134,32 @@ int BFontMap::SetSize(int Which, int NewSize)
        
 
      case CELLHEIGHT:
-       if(NewSize<8)
-        CellHeight=8;
+       if(NewSize<6)
+        CellHeight=6;
        else if(NewSize>256)
         CellHeight=256;
        else
         CellHeight=NewSize;
 
       return CellHeight;
-    }
+     case TEXTURECOLS:
+         if (NewSize < 1)
+            TextureCols = 1;
+         else if (NewSize > 256)
+            TextureCols = 256;
+         else
+            TextureCols = NewSize;
+         return TextureCols;
+
+     case TEXTUREROWS:
+         if (NewSize < 1)
+             TextureRows = 1;
+         else if (NewSize > 256)
+             TextureRows = 256;
+         else
+             TextureRows = NewSize;
+         return TextureRows;
+   }
 
   return 0;
  }
@@ -127,6 +179,12 @@ int BFontMap::GetSize(int Which)
 
      case CELLHEIGHT:
       return CellHeight;
+     
+     case TEXTURECOLS:
+         return TextureCols;
+
+     case TEXTUREROWS:
+         return TextureRows;
 
      case MAXCHARS:
       return (MapWidth/CellWidth)*(MapHeight/CellHeight);
@@ -265,7 +323,7 @@ long BFontMap::GetFontWidth()
   return FntDef.lfWidth;
  }
 
-bool BFontMap::SetFontName(char* NewName)
+bool BFontMap::SetFontName(wchar_t* NewName)
  {
    if(lstrcpy(FntDef.lfFaceName,NewName))
     return true;
@@ -273,7 +331,7 @@ bool BFontMap::SetFontName(char* NewName)
     return false;
  }
 
-char* BFontMap::GetFontName()
+wchar_t* BFontMap::GetFontName()
  {
   return FntDef.lfFaceName;
  }
@@ -440,6 +498,24 @@ bool BFontMap::CalcWidths(HDC hdc)
   return true;
  }
 
+bool BFontMap::SetAlphabet(wchar_t* text) {
+    if (wcscpy_s(Alphabet, _countof(Alphabet), text))
+        return true;
+    else
+        return false;
+}
+
+wchar_t* BFontMap::GetAlphabet() {
+    return Alphabet;
+}
+
+void BFontMap::enableAlphabet(bool newvalue) {
+    useAlphabet = newvalue;
+}
+
+bool BFontMap::AlphabetEnabled() {
+    return useAlphabet;
+}
 
 HBITMAP* BFontMap::DrawFontMap(int Flags, int Sel)
  {
@@ -448,16 +524,17 @@ HBITMAP* BFontMap::DrawFontMap(int Flags, int Sel)
   BITMAPINFO BMDat;
   HBRUSH Brush;
   HPEN Pen;
-  int RowDex,ColDex,Letter;
+  int RowDex, ColDex;
+  unsigned int Letter;
   HRGN ClipRgn;
   RECT CharArea;
-  char Symbol[2];
+  wchar_t Symbol[2];
   unsigned char eVal;
 
   // Create Device context
-  wDC=CreateDC("DISPLAY",NULL,NULL,NULL);
+  wDC= CreateDC(L"DISPLAY", NULL, NULL, NULL);
   mDC=CreateCompatibleDC(wDC);
-
+  
    if(!wDC || !mDC)
     return NULL;
 
@@ -474,9 +551,10 @@ HBITMAP* BFontMap::DrawFontMap(int Flags, int Sel)
   BMDat.bmiHeader.biCompression=BI_RGB;
   BMDat.bmiHeader.biSizeImage=(MapWidth*MapHeight)*3;  
 
-  *fDIB=CreateDIBSection(mDC,&BMDat,DIB_RGB_COLORS,NULL,NULL,0);
+  VOID* bits = NULL;
+  *fDIB=CreateDIBSection(mDC,&BMDat,DIB_RGB_COLORS, &bits,NULL,0);
 
-   if(!fDIB)
+   if(!*fDIB)
     return NULL;
 
    if(!SelectObject(mDC,*fDIB))
@@ -547,8 +625,12 @@ HBITMAP* BFontMap::DrawFontMap(int Flags, int Sel)
   Pen=CreatePen(PS_SOLID,0,RGB(WidthCol.Red,WidthCol.Green,WidthCol.Blue));
   SelectObject(mDC,Pen);
 
-  Letter=BaseChar;
+  if (useAlphabet)
+      Letter = 0;
+  else
+    Letter=BaseChar;
 
+  size_t AlphabetLength = wcslen(Alphabet);
    for(RowDex=0;RowDex<(MapHeight-CellHeight)+1;RowDex+=CellHeight)
     {
       for(ColDex=0;ColDex<(MapWidth-CellWidth)+1 && Letter<256;ColDex+=CellWidth)
@@ -570,7 +652,13 @@ HBITMAP* BFontMap::DrawFontMap(int Flags, int Sel)
         CharArea.right=ColDex+CellWidth;
         CharArea.top=RowDex+VMod[Letter]+gVMod;
         CharArea.bottom=RowDex+CellHeight;
-        wsprintf(Symbol,"%c",Letter);
+        if (useAlphabet) {
+            if (Letter > AlphabetLength - 1)
+                swprintf(Symbol, _countof(Symbol), L"%c", Alphabet[0]);
+            else
+                swprintf(Symbol, _countof(Symbol), L"%c", Alphabet[Letter]);
+        } else
+            swprintf(Symbol, _countof(Symbol), L"%c",Letter);
         Letter++;
         DrawText(mDC,Symbol,-1,&CharArea,DT_LEFT | DT_NOPREFIX | DT_NOCLIP);
         
@@ -613,7 +701,7 @@ HBITMAP* BFontMap::DrawFontMap(int Flags, int Sel)
 int BFontMap::LoadConfig(char *fname)
  {
   ifstream cfgfile;
-  long fSize;
+  streamoff fSize;
   char *dat;
   char Hdr[7];
   int tVal,Flags;
@@ -625,9 +713,12 @@ int BFontMap::LoadConfig(char *fname)
 
   cfgfile.seekg(0,ios_base::end);
   fSize=cfgfile.tellg();
+  if (fSize < 0)
+      return -1;
+
   cfgfile.seekg(0,ios_base::beg);
   
-  dat=new char[fSize];
+  dat=new char[static_cast<char>(fSize)];
 
    if(!dat)
     return -1;
@@ -637,16 +728,16 @@ int BFontMap::LoadConfig(char *fname)
   cfgfile.close();
   
   // Check ID
-  lstrcpyn(Hdr,dat,7);
+  lstrcpynA(Hdr,dat,7);
   Hdr[6]=NULL;
 
-   if(lstrcmp(Hdr,"BFGCFG"))
+   if(lstrcmpA(Hdr,"BFGCFG"))
     {
      delete [] dat;
      return -1;
     }
  
-  memcpy(&MapWidth,&dat[6],4);
+   memcpy(&MapWidth,&dat[6],4);
   memcpy(&MapHeight,&dat[10],4);
   memcpy(&CellWidth,&dat[14],4);
   memcpy(&CellHeight,&dat[18],4);
@@ -715,7 +806,7 @@ void BFontMap::ResetOffsets()
   gWidthMod=gHMod=gVMod=0;
  }
 
-bool BFontMap::SaveFont(int Format, char *fname, int flags)
+bool BFontMap::SaveFont(int Format, wchar_t*fname, int flags)
  {
   bool Inv,Sat;
   Inv=Sat=false;
@@ -752,7 +843,7 @@ bool BFontMap::SaveFont(int Format, char *fname, int flags)
  }
 
 
-bool BFontMap::SaveBFF2(char *fname, char OutputBPP, bool Invert, bool RGBSat)
+bool BFontMap::SaveBFF2(wchar_t*fname, char OutputBPP, bool Invert, bool RGBSat)
  {
   ofstream out;
   HBITMAP *hBMP;
@@ -861,7 +952,7 @@ bool BFontMap::SaveBFF2(char *fname, char OutputBPP, bool Invert, bool RGBSat)
  }
 
 
- int BFontMap::ExportMap(char* fname, int fmt)
+ int BFontMap::ExportMap(wchar_t* fname, int fmt)
  {
   ofstream out;
   HBITMAP *hBMP;
@@ -948,7 +1039,7 @@ bool BFontMap::SaveBFF2(char *fname, char OutputBPP, bool Invert, bool RGBSat)
   return Result;
  }
 
-bool BFontMap::ImportData(char *fname)
+bool BFontMap::ImportData(wchar_t*fname)
  {
 /*  extern BFontMap *Fnt;
 
@@ -1150,7 +1241,7 @@ bool BFontMap::ImportData(char *fname)
  }
 
 
-bool BFontMap::ExportCSVData(char *fname)
+bool BFontMap::ExportCSVData(wchar_t*fname)
  {
   ofstream out;
   int Loop;
@@ -1201,7 +1292,7 @@ bool BFontMap::ExportCSVData(char *fname)
  }
 
 
-bool BFontMap::ExportBinData(char *fname)
+bool BFontMap::ExportBinData(wchar_t*fname)
  {
   ofstream out;
   int Loop;

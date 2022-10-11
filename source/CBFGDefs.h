@@ -22,6 +22,8 @@
 #define MAPHEIGHT   2
 #define CELLWIDTH   3
 #define CELLHEIGHT  4
+#define TEXTURECOLS 5
+#define TEXTUREROWS 6
 #define MAXCHARS   10
 
 // DrawFontMap Constants
@@ -57,7 +59,7 @@ typedef struct
 typedef struct
  {
   int hScr,vScr;
-  bool Grid,wMarker,ModAll,vScroll,hScroll;
+  bool Grid,wMarker,useTextureSizeAuto,ModAll,vScroll,hScroll,useAlphabet;
   float Zoom;
   int Select,MaxChars;
  }AppInfo;

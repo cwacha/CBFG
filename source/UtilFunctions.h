@@ -30,7 +30,7 @@ HBITMAP* RenderFont(bool Markers);
 unsigned char* MakeAlpha();
 void CalcScroll();
 int ExportMap(char* fname, int fmt);
-BOOL CheckOverwrite(char *fname);
+BOOL CheckOverwrite(wchar_t*fname);
 
 
 #endif 

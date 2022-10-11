@@ -34,20 +34,20 @@ BOOL CALLBACK PreviewWinProc(HWND hDlg, UINT msg, WPARAM wParam, LPARAM lParam)
   PIXELFORMATDESCRIPTOR pfd, *ppfd; 
   int pixelformat;
   
-  static char PText[1024];
-  char Sample[13][128] = {{"THE QUICK BROWN FOX JUMPS OVER A LAZY DOG"},
-                          {"JACKDAWS LOVE MY BIG SPHINX OF QUARTZ"},
-                          {"QUICK WAFTING ZEPHYRS VEX BOLD JIM"},
-                          {"PACK MY BOX WITH FIVE DOZEN LIQUOR JUGS"},
-                          {"SIX BIG DEVILS FROM JAPAN QUICKLY FORGOT HOW TO WALTZ"},
-                          {"CRAZY FREDERICKA BOUGHT MANY VERY EXQUISITE OPAL JEWELS"},
-                          {"FEW QUIPS GALVANIZED THE MOCK JURY BOX"},
-                          {"THE FIVE BOXING WIZARDS JUMP QUICKLY"},
-                          {"A SHORT BRIMLESS FELT HAT BARELY BLOCKS OUT THE SOUND OF A CELTIC VIOLIN"},
-                          {"BEING BOUNCED AROUND QUICKLY ANNOYED THE DISHEVELED TAXI DRIVERS"},
-                          {"MY GIRL WOVE SIX DOZEN PLAID JACKETS BEFORE SHE QUIT"},
-                          {"SIXTY ZIPPERS WERE QUICKLY PICKED FROM THE WOVEN JUTE BAG"},
-                          {"MY FAXED JOKE WON A PAGER IN THE CABLE TV QUIZ SHOW"}};
+  static wchar_t PText[1024] = L"";
+  wchar_t Sample[13][128] = {{L"THE QUICK BROWN FOX JUMPS OVER A LAZY DOG"},
+                          {L"JACKDAWS LOVE MY BIG SPHINX OF QUARTZ"},
+                          {L"QUICK WAFTING ZEPHYRS VEX BOLD JIM"},
+                          {L"PACK MY BOX WITH FIVE DOZEN LIQUOR JUGS"},
+                          {L"SIX BIG DEVILS FROM JAPAN QUICKLY FORGOT HOW TO WALTZ"},
+                          {L"CRAZY FREDERICKA BOUGHT MANY VERY EXQUISITE OPAL JEWELS"},
+                          {L"FEW QUIPS GALVANIZED THE MOCK JURY BOX"},
+                          {L"THE FIVE BOXING WIZARDS JUMP QUICKLY"},
+                          {L"A SHORT BRIMLESS FELT HAT BARELY BLOCKS OUT THE SOUND OF A CELTIC VIOLIN"},
+                          {L"BEING BOUNCED AROUND QUICKLY ANNOYED THE DISHEVELED TAXI DRIVERS"},
+                          {L"MY GIRL WOVE SIX DOZEN PLAID JACKETS BEFORE SHE QUIT"},
+                          {L"SIXTY ZIPPERS WERE QUICKLY PICKED FROM THE WOVEN JUTE BAG"},
+                          {L"MY FAXED JOKE WON A PAGER IN THE CABLE TV QUIZ SHOW"}};
 
   switch(msg)
    {
@@ -66,8 +66,10 @@ BOOL CALLBACK PreviewWinProc(HWND hDlg, UINT msg, WPARAM wParam, LPARAM lParam)
 	    // Init GL Window
      hGL=GetDlgItem(hDlg,IDC_GL);
      glDC=GetDC(hGL);
-      if(glDC==NULL)
-       MessageBox(NULL,"GetDC failed","Error",MB_OK);
+     if (glDC == NULL) {
+         MessageBox(NULL, L"GetDC failed", L"Error", MB_OK);
+         return FALSE;
+      }
        	 
 	    ppfd = &pfd; 
      ZeroMemory(ppfd,sizeof(PIXELFORMATDESCRIPTOR));
@@ -86,13 +88,13 @@ BOOL CALLBACK PreviewWinProc(HWND hDlg, UINT msg, WPARAM wParam, LPARAM lParam)
 
       if(pixelformat==0)
        {
-        MessageBox(NULL,"ChoosePixelFormat failed", "Error", MB_OK);
+        MessageBox(NULL,L"ChoosePixelFormat failed", L"Error", MB_OK);
         return FALSE;
        }
    
       if(SetPixelFormat(glDC,pixelformat,ppfd)==FALSE) 
        { 
-        MessageBox(NULL, "SetPixelFormat failed", "Error", MB_OK); 
+        MessageBox(NULL, L"SetPixelFormat failed", L"Error", MB_OK); 
         return FALSE; 
        } 
 

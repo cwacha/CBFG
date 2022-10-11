@@ -39,12 +39,16 @@ int APIENTRY WinMain(HINSTANCE hInstance,
   AppInf.vScroll=FALSE;
   AppInf.ModAll=TRUE;
   AppInf.Select=0;
-
+  AppInf.Grid = TRUE;
+  AppInf.wMarker = TRUE;
+  AppInf.useTextureSizeAuto = FALSE;
+  AppInf.useAlphabet = FALSE;
+  
   Fnt=&Bf;
   info=&AppInf;
 
   hText=CreateDialog(G_Inst,MAKEINTRESOURCE(DLG_SPLASH),NULL,(DLGPROC)SplashWinProc);
-  SetWindowText(hText,"Codehead's Bitmap Font Generator");
+  SetWindowText(hText,L"Codehead's Bitmap Font Generator");
   SetWindowPos(hText,HWND_TOPMOST,0,0,0,0,SWP_NOMOVE | SWP_NOSIZE);
 
   // Load config or set defaults
@@ -66,7 +70,7 @@ int APIENTRY WinMain(HINSTANCE hInstance,
   hMain=CreateDialog(G_Inst,MAKEINTRESOURCE(DLG_MAIN),NULL,(DLGPROC)MainProc);
   Sleep(SPLASH_DELAY);
 
-  hText=CreateWindow("STATIC","TextWin",WS_POPUP,0,0,100,100,hMain,NULL,hInstance,NULL);
+  hText=CreateWindow(L"STATIC",L"TextWin",WS_POPUP,0,0,100,100,hMain,NULL,hInstance,NULL);
   Sleep(SPLASH_DELAY/2);
 
   OldProc=GetWindowLong(GetDlgItem(hMain,IMG_TEXT),GWL_WNDPROC);

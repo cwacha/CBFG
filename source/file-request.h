@@ -2,7 +2,7 @@
 #ifndef _FILE_REQUEST_H
 #define _FILE_REQUEST_H
 
-BOOL GetTargetName(char* fname, char* Title, char *filter, char* DefExt);
-BOOL GetSourceName(char* fname, char* title, char *filter, char* DefExt);
+BOOL GetTargetName(wchar_t* fname, wchar_t* Title, wchar_t*filter, wchar_t* DefExt);
+BOOL GetSourceName(wchar_t* fname, wchar_t* title, wchar_t*filter, wchar_t* DefExt);
 
 #endif

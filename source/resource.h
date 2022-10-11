@@ -2,6 +2,7 @@
 // Microsoft Visual C++ generated include file.
 // Used by Script1.rc
 //
+#define VS_VERSION_INFO                 1
 #define CMD_TEST_CLEAR                  2
 #define IDSAVE                          3
 #define CMD_TEST_CLEAR2                 3
@@ -73,6 +74,7 @@
 #define SCR_HOR                         1019
 #define CBO_IMGXRES2                    1020
 #define CBO_IMGYRES                     1020
+#define CBO_IMGYRES2                    1021
 #define CBO_ZOOM                        1022
 #define CHK_GRID                        1023
 #define RAD_ALL                         1024
@@ -111,6 +113,15 @@
 #define ODR_BACKCOL                     1047
 #define IDC_LIST1                       1049
 #define LST_CREDITS                     1049
+#define RAD_SIZE_MANUAL                 1050
+#define RAD_SIZE_AUTO                   1051
+#define TXT_TEXTURECOLS                 1053
+#define TXT_TEXTUREROWS                 1054
+#define SPN_TEXTURECOLS                 1055
+#define SPN_ROWS                        1057
+#define SPN_TEXTUREROWS                 1057
+#define TXT_ALPHABET                    1058
+#define CHK_ALPHABET                    1059
 #define ID_FILE_SAVEAS                  40004
 #define ID_FILE_EXIT                    40005
 #define ID_FONT_RESET                   40006
@@ -154,7 +165,7 @@
 #ifndef APSTUDIO_READONLY_SYMBOLS
 #define _APS_NEXT_RESOURCE_VALUE        121
 #define _APS_NEXT_COMMAND_VALUE         40050
-#define _APS_NEXT_CONTROL_VALUE         1050
+#define _APS_NEXT_CONTROL_VALUE         1060
 #define _APS_NEXT_SYMED_VALUE           103
 #endif
 #endif
